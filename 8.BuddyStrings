@@ -1,0 +1,33 @@
+#question 8
+def buddyStrings(s, goal):
+    if len(s) != len(goal):
+        return False
+
+    if s == goal:
+        # Check if s has any repeated characters
+        seen = set()
+        for char in s:
+            if char in seen:
+                return True
+            seen.add(char)
+        return False
+
+    diff_indices = []
+    for i in range(len(s)):
+        if s[i] != goal[i]:
+            diff_indices.append(i)
+
+    if len(diff_indices) != 2:
+        return False
+
+    i, j = diff_indices[0], diff_indices[1]
+    return s[i] == goal[j] and s[j] == goal[i]
+
+# Example usage:
+s = "ab"
+goal = "ba"
+output = buddyStrings(s, goal)
+print(output)
+
+#TC - O(n)
+#SC - O(1)

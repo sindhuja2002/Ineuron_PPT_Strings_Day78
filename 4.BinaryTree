@@ -1,0 +1,60 @@
+#question 4
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def str2tree(s):
+    if not s:
+        return None
+
+    # Find the index of the first opening parenthesis
+    idx = s.find('(')
+
+    if idx == -1:
+        # No opening parenthesis found, so the entire string is the value of the root node
+        return TreeNode(int(s))
+
+    # Extract the value of the root node from the substring before the opening parenthesis
+    root_val = int(s[:idx])
+
+    # Count the parentheses to find the substring for the left and right child nodes
+    count = 0
+    for i in range(idx, len(s)):
+        if s[i] == '(':
+            count += 1
+        elif s[i] == ')':
+            count -= 1
+
+        if count == 0:
+            # Split the string into the left and right substrings (inside the parentheses)
+            left_str = s[idx + 1: i]
+            right_str = s[i + 2: -1]
+
+            # Recursively construct the left and right child nodes
+            left_child = str2tree(left_str)
+            right_child = str2tree(right_str)
+
+            # Create the root node with its children
+            return TreeNode(root_val, left_child, right_child)
+
+# Example usage:
+s = "4(2(3)(1))(6(5))"
+tree = str2tree(s)
+
+# Traverse the tree in pre-order and collect the values into a list
+def pre_order_traversal(node, result):
+    if node is None:
+        return
+
+    result.append(node.val)
+    pre_order_traversal(node.left, result)
+    pre_order_traversal(node.right, result)
+
+output = []
+pre_order_traversal(tree, output)
+print(output)
+
+#TC - O(n)
+#SC - O(n)

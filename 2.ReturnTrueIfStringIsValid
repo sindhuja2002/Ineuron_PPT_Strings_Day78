@@ -1,0 +1,33 @@
+#question 2
+def isValid(s):
+    stack = []
+    star_stack = []
+
+    for char in s:
+        if char == '(':
+            stack.append(char)
+        elif char == '*':
+            star_stack.append(char)
+        elif char == ')':
+            if stack:
+                stack.pop()
+            elif star_stack:
+                star_stack.pop()
+            else:
+                return False
+
+    while stack and star_stack:
+        if stack[-1] > star_stack[-1]:
+            return False
+        stack.pop()
+        star_stack.pop()
+
+    return len(stack) == 0
+
+# Example usage:
+s = "()"
+output = isValid(s)
+print(output)
+
+#TC - O(n)
+#SC - O(n)

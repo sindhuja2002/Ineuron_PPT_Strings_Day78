@@ -1,0 +1,35 @@
+#question 6
+from collections import Counter
+
+def findAnagrams(s, p):
+    result = []
+    p_counter = Counter(p)
+    s_counter = Counter(s[:len(p)])
+
+    if s_counter == p_counter:
+        result.append(0)
+
+    for i in range(len(p), len(s)):
+        if s_counter[s[i - len(p)]] == 1:
+            del s_counter[s[i - len(p)]]
+        else:
+            s_counter[s[i - len(p)]] -= 1
+
+        if s[i] in s_counter:
+            s_counter[s[i]] += 1
+        else:
+            s_counter[s[i]] = 1
+
+        if s_counter == p_counter:
+            result.append(i - len(p) + 1)
+
+    return result
+
+# Example usage:
+s = "cbaebabacd"
+p = "abc"
+output = findAnagrams(s, p)
+print(output)
+
+#TC - O(n)
+#SC - O(1)-----bounded by unique characters of p,s
